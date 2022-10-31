@@ -44,6 +44,10 @@ class SHIP:
     def get_shot(self, shot_coordinates: tuple):
         for ship in SHIPS:
             if shot_coordinates in ship.get('coordinates'):
+
+                if ship['status'] == 'SINK':
+                    return 'SINK'
+
                 number_hits = ship.get('number_hits')
                 ship['number_hits'] = number_hits + 1
                 if ship['number_hits'] == ship.get('size'):

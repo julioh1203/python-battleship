@@ -7,7 +7,7 @@ from controllers.ships import SHIP
 app.testing = True
 
 
-class TestPost(unittest.TestCase):
+class TestCreateBattleshipGame(unittest.TestCase):
 
     def setUp(self) -> None:
         self.client = app.test_client()
@@ -40,11 +40,11 @@ class TestPost(unittest.TestCase):
             ],
         })
 
-    def test_post_sucessfull(self):
+    def test_create_battleship_game_sucessfull(self):
         response = self.client.post('/battleship', data=self.payload)
         self.assertEqual(response.status_code, 201)
 
-    def test_post_out_board_limit_return_bad_request(self):
+    def test_create_battleship_game_out_board_limit_return_bad_request(self):
         payload = json.dumps({
             "ships": [
                 {
@@ -64,7 +64,7 @@ class TestPost(unittest.TestCase):
         response = self.client.post('/battleship', data=payload)
         self.assertEqual(response.status_code, 400)
 
-    def test_post_shipment_overlap_return_bad_request(self):
+    def test_create_battleship_game_shipment_overlap_return_bad_request(self):
         payload = json.dumps({
             "ships": [
                 {
@@ -84,7 +84,7 @@ class TestPost(unittest.TestCase):
         response = self.client.post('/battleship', data=payload)
         self.assertEqual(response.status_code, 400)
 
-    def test_post_duplicated_return_bad_request(self):
+    def test_create_battleship_game_duplicated_return_bad_request(self):
         payload = json.dumps({
             "ships": [
                 {

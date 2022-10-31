@@ -19,8 +19,8 @@ def create_battleship_game():
     is_valid = BattleshipValidator.validate_ship_post(ships_posted)
     if is_valid:
         ships_saved = SHIP.create_ship(ships_posted)
-        return flask.jsonify(ships), http.HTTPStatus.CREATED
-    return flask.jsonify(ships), http.HTTPStatus.BAD_REQUEST
+        return flask.jsonify(ships_posted), http.HTTPStatus.CREATED
+    return flask.jsonify(ships_posted), http.HTTPStatus.BAD_REQUEST
 
 
 @app.route('/battleship', methods=['PUT'])
@@ -39,18 +39,6 @@ def shot():
     shot_coordinates = (shot_x_coordinate, shot_y_coordinate)
 
     result = SHIP().get_shot(shot_coordinates)
-
-    #
-    # result = "WATER"
-    # for ship_coordinate in ships_coordinates:
-    #     if shot_coordinates in ship_coordinate:
-    #         if shot_coordinates == ship_coordinate[0]:
-    #             result = "HIT"
-    #             update_ship_model(shot_coordinates)
-    #             break
-    #         if shot_coordinates == ship_coordinate[1]:
-    #             result = "SINK"
-    #             break
 
     response = {"result": result}
     return flask.jsonify(response), http.HTTPStatus.OK
