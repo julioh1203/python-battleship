@@ -1,6 +1,6 @@
 def get_ships_coordinates(ships: dict):
     coordinates = list(list())
-    for ship in ships.get('ships'):
+    for ship in ships:
         direction = ship.get('direction')
         initial_x_coordinate = ship.get('x')
         initial_y_coordinate = ship.get('y')
@@ -15,3 +15,4 @@ def get_ships_coordinates(ships: dict):
              range(initial_y_coordinate, length_coordinate)]
 
     return coordinates
+

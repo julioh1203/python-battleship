@@ -2,18 +2,17 @@ import json
 import unittest
 
 from battleship.api import app
-from battleship.utils.get_coordinates import get_ships_coordinates
 
 app.testing = True
 
 
-from battleship.validators import BattleshipValidator
-
-
-class TestBattleshipValidator(unittest.TestCase):
+class TestShot(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.ships = {
+
+        self.client = app.test_client()
+
+        self.payload = json.dumps({
             "ships": [
                 {
                     "x": 2,
@@ -40,12 +39,25 @@ class TestBattleshipValidator(unittest.TestCase):
                     "direction": "H"
                 }
             ],
-        }
+        })
 
-    def test_extract_ships_coordinates(self):
-        expected = [(2, 1), (3, 1), (4, 1), (5, 1), (7, 4), (7, 5), (7, 6), (3, 5), (3, 6), (6, 8)]
-        result = get_ships_coordinates(self.ships.get('ships'))
-        self.assertEqual(result, expected)
+        self.client.post('/battleship', data=self.payload)
+
+    def test_invalid_shot_outside_board_return_bad_request(self):
+        payload = json.dumps({
+            "x": 5,
+            "y": 10
+        })
+        response = self.client.put('/battleship', data=payload)
+        self.assertEqual(response.status_code, 400)
+
+    def test_water_shot(self):
+        payload = json.dumps({
+            "x": 5,
+            "y": 4
+        })
+        response = self.client.put('/battleship', data=payload)
+        self.assertEqual(response.status_code, 200)
 
     if __name__ == "__main__":
         unittest.main()

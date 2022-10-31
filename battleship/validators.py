@@ -23,7 +23,7 @@ class BattleshipValidator:
 
     @classmethod
     def validate_ship_post(cls, ships: dict):
-        coordinates = get_ships_coordinates(ships)
+        coordinates = get_ships_coordinates(ships.get('ships'))
         if not coordinates:
             return False
         is_valid_board_indices = cls.check_indices_board(coordinates)
@@ -32,4 +32,14 @@ class BattleshipValidator:
             if does_not_exist_overlap:
                 return True
         return False
+
+    @classmethod
+    def validate_shot(cls, shot: dict):
+        indice_x = shot.get('x')
+        indice_y = shot.get('y')
+        if indice_x < 0 or indice_x > 9:
+            return False
+        if indice_y < 0 or indice_y > 9:
+            return False
+        return True
 

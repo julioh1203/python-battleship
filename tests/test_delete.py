@@ -2,18 +2,15 @@ import json
 import unittest
 
 from battleship.api import app
-from battleship.utils.get_coordinates import get_ships_coordinates
 
 app.testing = True
 
 
-from battleship.validators import BattleshipValidator
-
-
-class TestBattleshipValidator(unittest.TestCase):
+class TestDelete(unittest.TestCase):
 
     def setUp(self) -> None:
-        self.ships = {
+        self.client = app.test_client()
+        self.payload = json.dumps({
             "ships": [
                 {
                     "x": 2,
@@ -40,12 +37,13 @@ class TestBattleshipValidator(unittest.TestCase):
                     "direction": "H"
                 }
             ],
-        }
+        })
 
-    def test_extract_ships_coordinates(self):
-        expected = [(2, 1), (3, 1), (4, 1), (5, 1), (7, 4), (7, 5), (7, 6), (3, 5), (3, 6), (6, 8)]
-        result = get_ships_coordinates(self.ships.get('ships'))
-        self.assertEqual(result, expected)
+        self.client.post('/battleship', data=self.payload)
+
+    def test_delete_sucessfull(self):
+        delete_response = self.client.delete('/battleship')
+        self.assertEqual(delete_response.status_code, 200)
 
     if __name__ == "__main__":
         unittest.main()

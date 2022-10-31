@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from battleship.api import app, SHIPS
+from battleship.api import app
 
 app.testing = True
 
@@ -78,6 +78,32 @@ class TestPost(unittest.TestCase):
                     "size": 3,
                     "direction": "V"
                 }
+            ]}
+        )
+        response = self.client.post('/battleship', data=payload)
+        self.assertEqual(response.status_code, 400)
+
+    def test_post_duplicated_return_bad_request(self):
+        payload = json.dumps({
+            "ships": [
+                {
+                    "x": 2,
+                    "y": 1,
+                    "size": 4,
+                    "direction": "H"
+                },
+                {
+                    "x": 7,
+                    "y": 4,
+                    "size": 3,
+                    "direction": "V"
+                },
+                {
+                    "x": 2,
+                    "y": 1,
+                    "size": 4,
+                    "direction": "H"
+                },
             ]}
         )
         response = self.client.post('/battleship', data=payload)
