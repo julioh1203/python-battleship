@@ -2,6 +2,7 @@ import json
 import unittest
 
 from battleship.api import app
+from controllers.ships import SHIP
 
 app.testing = True
 

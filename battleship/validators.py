@@ -1,4 +1,4 @@
-from battleship.utils.get_coordinates import get_ships_coordinates
+from utils.get_coordinates import get_ships_coordinates
 
 
 class BattleshipValidator:
@@ -30,7 +30,7 @@ class BattleshipValidator:
         if is_valid_board_indices:
             does_not_exist_overlap = cls.check_shipments_overlap(coordinates)
             if does_not_exist_overlap:
-                return True
+                return coordinates
         return False
 
     @classmethod

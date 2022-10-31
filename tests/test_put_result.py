@@ -9,7 +9,6 @@ app.testing = True
 class TestShot(unittest.TestCase):
 
     def setUp(self) -> None:
-
         self.client = app.test_client()
 
         self.payload = json.dumps({
@@ -43,21 +42,29 @@ class TestShot(unittest.TestCase):
 
         self.client.post('/battleship', data=self.payload)
 
-    def test_invalid_shot_outside_board_return_bad_request(self):
-        payload = json.dumps({
-            "x": 5,
-            "y": 10
-        })
-        response = self.client.put('/battleship', data=payload)
-        self.assertEqual(response.status_code, 400)
-
-    def test_water_shot(self):
+    def test_shot_water_result(self):
         payload = json.dumps({
             "x": 5,
             "y": 4
         })
         response = self.client.put('/battleship', data=payload)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json.get('result'), 'WATER')
+
+    def test_shot_hit_result(self):
+        payload = json.dumps({
+            "x": 5,
+            "y": 1
+        })
+        response = self.client.put('/battleship', data=payload)
+        self.assertEqual(response.json.get('result'), 'HIT')
+
+    def test_shot_sink_result(self):
+        payload = json.dumps({
+            "x": 6,
+            "y": 8
+        })
+        response = self.client.put('/battleship', data=payload)
+        self.assertEqual(response.json.get('result'), 'SINK')
 
     if __name__ == "__main__":
         unittest.main()
